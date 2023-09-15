@@ -9,15 +9,15 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
+using Java.Lang;
 
 namespace TicTacToe2
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
-    public class MainActivity : AppCompatActivity
+    public class MainActivity : TicTacToeGameplay
     {
         private bool player1_turn;
         private Button[,] game_array;
-        private string[,] game_array_txt;
         private TextView txt;
         private bool winflag;
         protected override void OnCreate(Bundle savedInstanceState)
@@ -29,8 +29,8 @@ namespace TicTacToe2
 
             player1_turn = true;
             game_array = new Button[3, 3];
-  
-            txt = FindViewById<TextView>(Resource.Id.txt); 
+
+            txt = FindViewById<TextView>(Resource.Id.txt);
 
             winflag = false;
 
@@ -43,8 +43,6 @@ namespace TicTacToe2
             game_array[2, 0] = FindViewById<Button>(Resource.Id.button20);
             game_array[2, 1] = FindViewById<Button>(Resource.Id.button21);
             game_array[2, 2] = FindViewById<Button>(Resource.Id.button22);
-
-            game_array_txt = new string[3, 3]; //game layout as the button's Text attribute
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
@@ -59,7 +57,9 @@ namespace TicTacToe2
             Button b = (Button)v;
             if (b.Text == "Clear")
             {
-                ClearDeck();
+                ClearDeck(game_array, winflag, txt);
+                winflag = false;
+                player1_turn = true;
             }
             if (!winflag)
             {
@@ -75,61 +75,16 @@ namespace TicTacToe2
                     b.Text = "O";
                     this.player1_turn = true;
                 }
-
-
-                if (CheckForWin() == "")
-                {
+                if (CheckForWin(game_array) == "")
                     return;
-                }
                 else
                 {
-                    txt.Text = "" + CheckForWin() + " won";
+                    txt.Text = "" + CheckForWin(game_array) + " won";
                     winflag = true;
                 }
-            }
-
-            
+            } 
         }
-        private string CheckForWin()
-        {
-
-            for (int i = 0; i < 3; i++)
-                for (int j = 0; j < 3; j++) 
-                    game_array_txt[i, j] = game_array[i, j].Text;
-
-            for (int i = 0; i < 3; i++) //check the columbs
-            {
-                if (game_array_txt[i, 0].Equals(game_array_txt[i, 1])
-                    && game_array_txt[i, 0].Equals(game_array_txt[i, 2])
-                    && !game_array_txt[i, 0].Equals(""))
-                    return game_array_txt[i, 0];
-            }
-            for (int i = 0; i < 3; i++) //check the rows
-            {
-                if (game_array_txt[0, i].Equals(game_array_txt[1, i])
-                    && game_array_txt[0, i].Equals(game_array_txt[2, i])
-                    && !game_array_txt[0, i].Equals(""))
-                    return game_array_txt[0, i];
-            }
-            if (game_array_txt[0, 0].Equals(game_array_txt[1, 1]) //check diagnal 1
-                    && game_array_txt[0, 0].Equals(game_array_txt[2, 2])
-                    && !game_array_txt[0, 0].Equals(""))
-                return game_array_txt[0, 0];
-
-            if (game_array_txt[0, 2].Equals(game_array_txt[1, 1]) //check diagnal 2
-                    && game_array_txt[0, 2].Equals(game_array_txt[2, 0])
-                    && !game_array_txt[0, 2].Equals(""))
-                return game_array_txt[0, 2];
-
-            return "";
-        }
-        private void ClearDeck()
-        {
-            for (int i = 0; i < 3; i++)
-                for (int j = 0; j < 3; j++)
-                    game_array[i, j].Text = "";
-            this.winflag = false;
-            this.txt.Text = "tic tac toe";
-        }
+       
     }
 }
+
