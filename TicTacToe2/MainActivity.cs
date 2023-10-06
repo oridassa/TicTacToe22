@@ -6,6 +6,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Telephony;
 using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
@@ -14,12 +15,13 @@ using Java.Lang;
 namespace TicTacToe2
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
-    public class MainActivity : TicTacToeGameplay
+    public class MainActivity : AppCompatActivity
     {
         private bool player1_turn;
         private Button[,] game_array;
         private TextView txt;
         private bool winflag;
+        private Button reset;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -43,6 +45,8 @@ namespace TicTacToe2
             game_array[2, 0] = FindViewById<Button>(Resource.Id.button20);
             game_array[2, 1] = FindViewById<Button>(Resource.Id.button21);
             game_array[2, 2] = FindViewById<Button>(Resource.Id.button22);
+
+            reset = FindViewById<Button>(Resource.Id.reset);
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
@@ -55,11 +59,17 @@ namespace TicTacToe2
         public void Onclick(View v)
         {
             Button b = (Button)v;
+            if (b.Text == "NAMES")
+            {
+                Intent intent = new Intent(this, typeof(PlayerNameInputActivity));
+                base.StartActivity(intent);
+            }
             if (b.Text == "Clear")
             {
-                ClearDeck(game_array, winflag, txt);
+                TicTacToeGameplay.ClearDeck(game_array, winflag, txt);
                 winflag = false;
                 player1_turn = true;
+                reset.Visibility = ViewStates.Invisible;
             }
             if (!winflag)
             {
@@ -75,14 +85,29 @@ namespace TicTacToe2
                     b.Text = "O";
                     this.player1_turn = true;
                 }
-                if (CheckForWin(game_array) == "")
-                    return;
-                else
+
+                switch (TicTacToeGameplay.CheckForWin(game_array))
                 {
-                    txt.Text = "" + CheckForWin(game_array) + " won";
-                    winflag = true;
+                    case "":
+                        return;
+                    case "X":
+                        txt.Text = Names.GetX() + " won";
+                        winflag = true;
+                        reset.Visibility = ViewStates.Visible;
+                        break;
+                    case "O":
+                        txt.Text = Names.GetO() + " won";
+                        winflag = true;
+                        reset.Visibility = ViewStates.Visible;
+                        break;
+                    case "finish_game":
+                        txt.Text = "Draw";
+                        reset.Visibility = ViewStates.Visible;
+                        break;
                 }
             } 
+ 
+            
         }
        
     }

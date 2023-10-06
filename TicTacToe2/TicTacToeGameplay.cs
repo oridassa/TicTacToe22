@@ -9,15 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AndroidX.AppCompat.App;
+using Android.Locations;
 
 namespace TicTacToe2
 {
-    public class TicTacToeGameplay : AppCompatActivity
+    public static class TicTacToeGameplay
     {
-        public TicTacToeGameplay()
-        {
-        }
-        public string CheckForWin(Button[,] game_array)
+        public static string CheckForWin(Button[,] game_array)
         {
             string[,] game_array_txt = new string[3, 3];
             for (int i = 0; i < 3; i++)
@@ -38,24 +36,26 @@ namespace TicTacToe2
                     && !game_array_txt[0, i].Equals(""))
                     return game_array_txt[0, i];
             }
-            if (game_array_txt[0, 0].Equals(game_array_txt[1, 1]) //check diagnal 1
+            if (game_array_txt[0, 0].Equals(game_array_txt[1, 1]) //check diagnal \
                     && game_array_txt[0, 0].Equals(game_array_txt[2, 2])
                     && !game_array_txt[0, 0].Equals(""))
                 return game_array_txt[0, 0];
 
-            if (game_array_txt[0, 2].Equals(game_array_txt[1, 1]) //check diagnal 2
+            if (game_array_txt[0, 2].Equals(game_array_txt[1, 1]) //check diagnal /
                     && game_array_txt[0, 2].Equals(game_array_txt[2, 0])
                     && !game_array_txt[0, 2].Equals(""))
                 return game_array_txt[0, 2];
-
+            if (game_array_txt[0, 0] != "" && game_array_txt[0, 1] != "" && game_array_txt[0, 2] != "" &&
+                game_array_txt[1, 0] != "" && game_array_txt[1, 1] != "" && game_array_txt[1, 2] != "" &&
+                game_array_txt[2, 0] != "" && game_array_txt[2, 1] != "" && game_array_txt[2, 2] != "")
+                return "finish_game";
             return "";
         }
-        public void ClearDeck(Button[,] game_array, bool winflag, TextView txt)
+        public static void ClearDeck(Button[,] game_array, bool winflag, TextView txt)
         {
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
                     game_array[i, j].Text = "";
-            winflag = false;
             txt.Text = "tic tac toe";
         }
     }

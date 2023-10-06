@@ -120,5 +120,14 @@
         android:textSize="50sp"
         android:text="Clear"
         android:onClick="Onclick"
+        android:id="@+id/reset"
+        android:visibility="invisible"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="NAMES"
+        android:onClick="Onclick"
         />
 </LinearLayout>
