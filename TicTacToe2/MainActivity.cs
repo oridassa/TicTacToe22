@@ -79,13 +79,14 @@ namespace TicTacToe2
                 {
                     b.Text = "X";
                     this.player1_turn = false;
+                    txt.Text = Names.GetO() + "'s turn";
                 }
                 else
                 {
                     b.Text = "O";
                     this.player1_turn = true;
+                    txt.Text = Names.GetX() + "'s turn";
                 }
-
                 switch (TicTacToeGameplay.CheckForWin(game_array))
                 {
                     case "":
