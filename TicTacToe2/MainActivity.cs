@@ -47,6 +47,8 @@ namespace TicTacToe2
             game_array[2, 2] = FindViewById<Button>(Resource.Id.button22);
 
             reset = FindViewById<Button>(Resource.Id.reset);
+
+            txt.Text = Names.GetX() + "'s turn";
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
@@ -70,6 +72,7 @@ namespace TicTacToe2
                 winflag = false;
                 player1_turn = true;
                 reset.Visibility = ViewStates.Invisible;
+                txt.Text = Names.GetX() + "'s turn";
             }
             if (!winflag)
             {
@@ -95,11 +98,13 @@ namespace TicTacToe2
                         txt.Text = Names.GetX() + " won";
                         winflag = true;
                         reset.Visibility = ViewStates.Visible;
+                        Names.incrementx();
                         break;
                     case "O":
                         txt.Text = Names.GetO() + " won";
                         winflag = true;
                         reset.Visibility = ViewStates.Visible;
+                        Names.incremento();
                         break;
                     case "finish_game":
                         txt.Text = "Draw";

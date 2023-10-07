@@ -15,8 +15,8 @@ namespace TicTacToe2
     public class PlayerNameInputActivity : Activity
     {
         private Button button;
-        private EditText xname;
-        private EditText oname;
+        private EditText xname, oname;
+        private TextView xscore, oscore;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -26,15 +26,24 @@ namespace TicTacToe2
             button = FindViewById<Button>(Resource.Id.button);
             xname = FindViewById<EditText>(Resource.Id.Xname);
             oname = FindViewById<EditText>(Resource.Id.Oname);
+            xscore = FindViewById<TextView>(Resource.Id.xscore);
+            oscore = FindViewById<TextView>(Resource.Id.oscore);
+            xscore.Text = $"{Names.GetX()} score is: {Names.get_x_score()}";
+            oscore.Text = $"{Names.GetO()} score is: {Names.get_o_score()}";
         }
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
+            xscore.Text = $"{Names.GetX()} score is: {Names.get_x_score()}";
+            oscore.Text = $"{Names.GetO()} score is: {Names.get_o_score()}";
         }
         [Java.Interop.Export("Onclick")]
         public void Onclick(View v)
         {
-            Names.SetX(xname.Text);
-            Names.SetO(oname.Text);
+            if (xname.Text != "")
+                Names.SetX(xname.Text);
+            
+            if (oname.Text != "")
+                Names.SetO(oname.Text);
             Intent intent = new Intent(this, typeof(MainActivity));
             base.StartActivity(intent);
         }

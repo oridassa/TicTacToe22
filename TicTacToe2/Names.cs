@@ -17,7 +17,8 @@ namespace TicTacToe2
     {
         private static string xname = "X";
         private static string oname = "O";
-
+        private static int xscore = 0;
+        private static int oscore = 0;
         public static void SetX(string x)
         {
             xname = x;
@@ -33,6 +34,22 @@ namespace TicTacToe2
         public static string GetO()
         {
             return oname;
+        }
+        public static void incrementx()
+        {
+            xscore++;
+        }
+        public static void incremento()
+        {
+            oscore++;
+        }
+        public static int get_o_score()
+        {
+            return oscore;
+        }
+        public static int get_x_score()
+        {
+            return xscore;
         }
     }
 }
